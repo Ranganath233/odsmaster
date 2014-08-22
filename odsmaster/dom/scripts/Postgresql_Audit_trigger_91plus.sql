@@ -1,5 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA gemsods;
-
+set search_path='gemsods';
 CREATE TABLE gemsods.audit_logged_actions (
     event_id bigserial PRIMARY KEY,
     schema_name text NOT NULL,
@@ -51,6 +51,7 @@ DECLARE
     h_old hstore;
     h_new hstore;
     excluded_cols text[] = ARRAY[]::text[];
+    audit_user text;
 BEGIN
     IF TG_WHEN <> 'AFTER' THEN
         RAISE EXCEPTION 'gemsods.if_modified_func() may only run as an AFTER trigger';
